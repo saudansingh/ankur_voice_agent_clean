@@ -43,7 +43,7 @@ function App() {
   const audioElementRef = useRef(null);
 
   // LiveKit server URL
-  const livekitUrl = 'wss://voice-agent-u5bk8av6.livekit.cloud';
+  const livekitUrl = process.env.REACT_APP_LIVEKIT_URL || 'wss://voice-agent-u5bk8av6.livekit.cloud';
 
   useEffect(() => {
     if (selectedAgent) {
@@ -61,11 +61,8 @@ function App() {
 
   const generateToken = async () => {
     try {
-      // In production, fetch token from your deployed API
-      // For local development, you can use localhost:8000
-      const API_URL = process.env.NODE_ENV === 'production' 
-        ? 'https://your-backend-url.com' 
-        : 'http://localhost:8000';
+      // Use environment variable for API URL
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
       
       const response = await fetch(`${API_URL}/token`, {
         method: 'POST',
