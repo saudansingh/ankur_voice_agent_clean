@@ -35,7 +35,7 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
         if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
             raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
         
-        # Generate token with proper claims
+        # Generate token with proper claims using correct LiveKit API
         from livekit.api import AccessToken
         token = AccessToken(
             api_key=LIVEKIT_API_KEY,
@@ -44,7 +44,7 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
         token.identity = identity
         token.name = identity
         
-        # Add grants using the correct method
+        # Add grants using the correct method for LiveKit
         token.add_grant("video", room_name)
         token.add_grant("audio", room_name)
         token.add_grant("data", room_name)
@@ -73,7 +73,7 @@ async def generate_token(request: dict = None):
         if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
             raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
         
-        # Generate token with proper claims
+        # Generate token with proper claims using correct LiveKit API
         from livekit.api import AccessToken
         token = AccessToken(
             api_key=LIVEKIT_API_KEY,
@@ -82,7 +82,7 @@ async def generate_token(request: dict = None):
         token.identity = identity
         token.name = identity
         
-        # Add grants using the correct method
+        # Add grants using the correct method for LiveKit
         token.add_grant("video", room_name)
         token.add_grant("audio", room_name)
         token.add_grant("data", room_name)
