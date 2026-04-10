@@ -11,7 +11,6 @@ from livekit.agents import (
     cli,
 )
 from livekit.plugins import deepgram, openai, silero
-from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
 logger = logging.getLogger("agent")
 
@@ -63,7 +62,6 @@ async def entrypoint(ctx: JobContext):
         stt="deepgram/nova-3",
         llm="openai/gpt-4.1-mini",
         tts="cartesia/sonic-3",
-        turn_detection=MultilingualModel(),
     )
     
     await session.start(
