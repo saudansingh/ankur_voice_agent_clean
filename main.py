@@ -53,14 +53,16 @@ async def generate_token(room_name: str = "ankur-room", identity: str = "web-use
         
         # Generate token with proper claims
         from livekit.api import AccessToken
-        access_token = AccessToken(
+        token = AccessToken(
             api_key=LIVEKIT_API_KEY,
             api_secret=LIVEKIT_API_SECRET,
+            identity=identity,
+            name=identity,
+            video={"room_join": True, "room": room_name},
+            audio={"room_join": True, "room": room_name},
+            data={"room_join": True, "room": room_name},
         )
-        access_token.with_grants("video", room_name)
-        access_token.with_grants("audio", room_name)
-        access_token.with_grants("data", room_name)
-        token = access_token.to_jwt()
+        jwt_token = token.to_jwt()
         
         return {"token": token}
     except HTTPException:
