@@ -56,16 +56,12 @@ async def generate_token(room_name: str = "ankur-room", identity: str = "web-use
         access_token = AccessToken(
             api_key=LIVEKIT_API_KEY,
             api_secret=LIVEKIT_API_SECRET,
+            identity=identity,
+            name=identity,
         )
-        access_token.add_grant({
-            "identity": identity,
-            "name": identity,
-            "room": room_name,
-            "room_join": True,
-            "can_publish": True,
-            "can_subscribe": True,
-            "can_publish_data": True,
-        })
+        access_token.add_grant("video", room_name)
+        access_token.add_grant("audio", room_name)
+        access_token.add_grant("data", room_name)
         token = access_token.to_jwt()
         
         return {"token": token}
