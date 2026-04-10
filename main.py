@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from livekit.agents import WorkerOptions, cli
 from livekit.agents.job import JobRequest
-from livekit.api import LiveKitAPI, TokenError
+from livekit.api import LiveKitAPI
 import jwt
 import time
 
@@ -52,10 +52,8 @@ async def generate_token(room_name: str = "test-room", identity: str = "web-user
         )
         
         return {"token": token}
-    except TokenError as e:
-        raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
 
 @app.get("/health")
 async def health_check():
