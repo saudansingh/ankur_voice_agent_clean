@@ -19,7 +19,7 @@ app = FastAPI(title="Priya Voice Agent API")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend domain
+    allow_origins=["https://ankur-voice-agent-clean-ng919haad-saudansinghs-projects.vercel.app", "*"],  # Allow your Vercel domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
