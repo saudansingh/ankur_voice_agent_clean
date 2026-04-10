@@ -44,12 +44,16 @@ async def root():
     return {"message": "Ankur Voice Agent API", "status": "running"}
 
 @app.post("/token")
-async def generate_token(request: dict):
+async def generate_token(request: dict = None):
     """Generate a LiveKit token for frontend connection"""
     try:
-        # Get parameters from JSON body
-        room_name = request.get("room_name", "ankur-room")
-        identity = request.get("identity", "web-user")
+        # Get parameters from JSON body or use defaults
+        if request:
+            room_name = request.get("room_name", "ankur-room")
+            identity = request.get("identity", "web-user")
+        else:
+            room_name = "ankur-room"
+            identity = "web-user"
         
         # Check if environment variables are set
         if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
