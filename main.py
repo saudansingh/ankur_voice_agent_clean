@@ -47,6 +47,10 @@ async def root():
 async def generate_token(room_name: str = "ankur-room", identity: str = "web-user"):
     """Generate a LiveKit token for frontend connection"""
     try:
+        # Check if environment variables are set
+        if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
+            raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
+        
         # Generate token with proper claims
         api = get_livekit_api()
         token = api.auth.create_token(
@@ -60,7 +64,10 @@ async def generate_token(room_name: str = "ankur-room", identity: str = "web-use
         )
         
         return {"token": token}
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"Token generation error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
 
 @app.get("/health")
