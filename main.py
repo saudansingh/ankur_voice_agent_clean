@@ -1,43 +1,27 @@
-import asyncio
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from livekit.agents import WorkerOptions, cli
-from livekit.agents.job import JobRequest
-from livekit.api import LiveKitAPI
-import jwt
-import time
-
-from agent import Assistant, entrypoint
 
 # Load environment variables
-load_dotenv(".env.local")
+load_dotenv()
 
-app = FastAPI(title="Priya Voice Agent API")
+# Get environment variables
+LIVEKIT_URL = os.getenv("LIVEKIT_URL")
+LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
+LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 # Configure CORS
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://ankur-voice-agent-clean-ng919haad-saudansinghs-projects.vercel.app", "*"],  # Allow your Vercel domain
+    allow_origins=["https://ankur-voice-agent-clean-ng919haad-saudansinghs-projects.vercel.app", "*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Initialize LiveKit API
-LIVEKIT_URL = os.getenv("LIVEKIT_URL")
-LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
-LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
-
-# Global variable for API instance
-livekit_api = None
-
-def get_livekit_api():
-    global livekit_api
-    if livekit_api is None:
-        livekit_api = LiveKitAPI(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)
-    return livekit_api
 
 @app.get("/")
 async def root():
@@ -59,9 +43,12 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
         )
         token.identity = identity
         token.name = identity
+        
+        # Add grants using the correct method
         token.add_grant("video", room_name)
         token.add_grant("audio", room_name)
         token.add_grant("data", room_name)
+        
         jwt_token = token.to_jwt()
         
         return {"token": jwt_token}
@@ -94,26 +81,24 @@ async def generate_token(request: dict = None):
         )
         token.identity = identity
         token.name = identity
+        
+        # Add grants using the correct method
         token.add_grant("video", room_name)
         token.add_grant("audio", room_name)
         token.add_grant("data", room_name)
+        
         jwt_token = token.to_jwt()
         
         return {"token": jwt_token}
     except HTTPException:
         raise
     except Exception as e:
-        print(f"Token generation error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
-
-@app.get("/token")
-async def generate_token_get(room_name: str = "ankur-room", identity: str = "web-user"):
-    """Generate a LiveKit token for frontend connection (GET method for testing)"""
-    return await generate_token(room_name, identity)
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "timestamp": time.time()}
+    """Health check endpoint"""
+    return {"status": "healthy", "service": "ankur-voice-agent-api"}
 
 @app.get("/agent-status")
 async def agent_status():
@@ -136,4 +121,3 @@ if __name__ == "__main__":
         reload=True,
         log_level="info"
     )
-
