@@ -44,10 +44,8 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
         token.identity = identity
         token.name = identity
         
-        # Add grants using the correct method for LiveKit
-        token.add_grant("video", room_name)
-        token.add_grant("audio", room_name)
-        token.add_grant("data", room_name)
+        # Use the correct method to add grants
+        token.with_grants(video=True, audio=True, data=True, room=room_name)
         
         jwt_token = token.to_jwt()
         
@@ -82,10 +80,8 @@ async def generate_token(request: dict = None):
         token.identity = identity
         token.name = identity
         
-        # Add grants using the correct method for LiveKit
-        token.add_grant("video", room_name)
-        token.add_grant("audio", room_name)
-        token.add_grant("data", room_name)
+        # Use the correct method to add grants
+        token.with_grants(video=True, audio=True, data=True, room=room_name)
         
         jwt_token = token.to_jwt()
         
