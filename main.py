@@ -52,15 +52,14 @@ async def generate_token(room_name: str = "ankur-room", identity: str = "web-use
             raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
         
         # Generate token with proper claims
-        api = get_livekit_api()
         from livekit.api import AccessToken
         access_token = AccessToken(
             api_key=LIVEKIT_API_KEY,
             api_secret=LIVEKIT_API_SECRET,
-            identity=identity,
-            name=identity,
         )
         access_token.add_grant({
+            "identity": identity,
+            "name": identity,
             "room": room_name,
             "room_join": True,
             "can_publish": True,
