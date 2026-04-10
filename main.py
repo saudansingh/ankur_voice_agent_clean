@@ -70,6 +70,11 @@ async def generate_token(room_name: str = "ankur-room", identity: str = "web-use
         print(f"Token generation error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Token generation failed: {str(e)}")
 
+@app.get("/token")
+async def generate_token_get(room_name: str = "ankur-room", identity: str = "web-user"):
+    """Generate a LiveKit token for frontend connection (GET method for testing)"""
+    return await generate_token(room_name, identity)
+
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "timestamp": time.time()}
