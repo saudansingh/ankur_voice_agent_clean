@@ -93,23 +93,8 @@ async def agent_status():
 
 if __name__ == "__main__":
     import uvicorn
-    import threading
-    import asyncio
-    from livekit.agents import cli
     
-    # Start agent worker in background
-    def start_agent_worker():
-        try:
-            # Run agent worker in the background
-            asyncio.run(cli.cli_entrypoint(["agent", "run", "agent"]))
-        except Exception as e:
-            print(f"Agent worker error: {e}")
-    
-    # Start agent worker thread
-    agent_thread = threading.Thread(target=start_agent_worker, daemon=True)
-    agent_thread.start()
-    
-    # Run the API server
+    # Run API server only
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
