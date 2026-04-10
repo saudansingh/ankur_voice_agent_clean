@@ -1,4 +1,6 @@
 import logging
+import os
+from dotenv import load_dotenv
 from livekit.agents import (
     Agent,
     AgentSession,
@@ -9,7 +11,7 @@ from livekit.agents import (
     cli,
 )
 from livekit.plugins import deepgram, openai, silero
-from livekit.plugins.silero import MultilingualModel
+from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
 logger = logging.getLogger("agent")
 
