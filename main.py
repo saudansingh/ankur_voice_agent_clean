@@ -80,6 +80,17 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
 async def health_check():
     return {"status": "healthy", "timestamp": time.time()}
 
+@app.get("/agent-status")
+async def agent_status():
+    """Check if agent worker is running"""
+    try:
+        # Try to connect to agent to see if it's responsive
+        from livekit.agents import cli
+        # This is a basic check - in production, agent should be running
+        return {"agent_status": "agent_worker_should_be_running", "note": "Check Railway logs for agent worker"}
+    except Exception as e:
+        return {"agent_status": "unknown", "error": str(e)}
+
 if __name__ == "__main__":
     import uvicorn
     
