@@ -37,7 +37,7 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
         if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
             raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
         
-        # Create JWT token manually with correct LiveKit claims
+        # Create JWT token with correct LiveKit claims format
         now = datetime.utcnow()
         exp = now + timedelta(hours=24)
         
@@ -52,22 +52,16 @@ async def generate_token_get(room_name: str = "ankur-room", identity: str = "web
             "name": identity,
             "metadata": "",
             "video": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             },
             "audio": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             },
             "data": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             }
         }
         
@@ -95,7 +89,7 @@ async def generate_token(request: dict = None):
         if not all([LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET]):
             raise HTTPException(status_code=500, detail="Missing LiveKit environment variables")
         
-        # Create JWT token manually with correct LiveKit claims
+        # Create JWT token with correct LiveKit claims format
         now = datetime.utcnow()
         exp = now + timedelta(hours=24)
         
@@ -110,22 +104,16 @@ async def generate_token(request: dict = None):
             "name": identity,
             "metadata": "",
             "video": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             },
             "audio": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             },
             "data": {
-                "room": room_name,
                 "roomJoin": True,
-                "canPublish": True,
-                "canSubscribe": True
+                "room": room_name
             }
         }
         
